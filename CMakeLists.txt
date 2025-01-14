@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(dictionary_app 
     src/main.cpp
-)
+ )
 
 target_include_directories(dictionary_app PRIVATE src)
 

@@ -1,6 +1,8 @@
 #ifndef FORWARDLIST
 #define FORWARDLIST
 
+#include <cstddef>
+
 template <typename T>
 class ForwardList
 {
@@ -14,26 +16,71 @@ public:
     bool empty();
     size_t size();
 
-private:
-    class Node
-    {
-    public:
-        T data_;
-        Node* next_;
+public:
+    class Iterator;
 
-        Node(T value);
-    };
+    Iterator begin();
+    Iterator end();
+
+private:
+    class Node;
 
 private:
     Node* head_;
     size_t size_;
 };
 
+
+// Реализация итератора
 template <typename T>
-ForwardList<T>::Node::Node(T value) : data_(value), next_(nullptr)
+class ForwardList<T>::Iterator
 {
+public:
+    Iterator(Node* node) : currentNode_(node) { }
+
+    bool operator!=(Iterator other) { return currentNode_ != other.currentNode_; }
+
+    bool operator==(Iterator other) { return currentNode_ == other.currentNode_; }
+
+    T& operator*() { return currentNode_->data_; }
+
+    void operator++() { currentNode_ = currentNode_->next_; }
+
+    Iterator operator++(int)
+    {
+        Iterator temp = *this;
+        ++(*this);
+        return temp;
+    }
+
+private:
+    Node* currentNode_;
+};
+
+template <typename T>
+typename ForwardList<T>::Iterator ForwardList<T>::begin()
+{
+    return Iterator(head_);
 }
 
+template <typename T>
+typename ForwardList<T>::Iterator ForwardList<T>::end()
+{
+    return Iterator(nullptr);
+}
+
+// Реализация ноды
+template <typename T>
+class ForwardList<T>::Node
+{
+public:
+    Node(T value) : data_(value), next_(nullptr) { }
+
+    T data_;
+    Node* next_;
+};
+
+// Методы ForwardList`а
 template <typename T>
 ForwardList<T>::ForwardList() : size_(0), head_(nullptr)
 {

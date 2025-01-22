@@ -1,7 +1,7 @@
+#include <cstddef>
 #ifndef FORWARDLIST
 #define FORWARDLIST
 
-#include <cstddef>
 
 template <typename T>
 class ForwardList
